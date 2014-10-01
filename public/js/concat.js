@@ -1,12 +1,61 @@
-﻿var piecePos = [['WR1', 'WN1', 'WB1', 'WK1', 'WQ1', 'WB2', 'WN2', 'WR2'], //1
-                ['WP1', 'WP2', 'WP3', 'WP4', 'WP5', 'WP6', 'WP7', 'WP8'], //2
-                [    0,     0,     0,     0,     0,     0,     0,     0], //3
-                [    0,     0,     0,     0,     0,     0,     0,     0], //4
-                [    0,     0,     0,     0,     0,     0,     0,     0], //5
-                [    0,     0,     0,     0,     0,     0,     0,     0], //6
-                ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
-                ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
-                // a      b      c      d      e      f      g      h
+// connect to our socket server
+var socket = io.connect('http://127.0.0.1:1337/');
+
+var app = app || {};
+
+
+// shortcut for document.ready
+//$(function(){
+//	//setup some common vars
+//	var $blastField = $('#blast'),
+//		$allPostsTextArea = $('#allPosts'),
+//		$clearAllPosts = $('#clearAllPosts'),
+//		$sendBlastButton = $('#send');
+//
+//
+//	//SOCKET STUFF
+//	socket.on("blast", function(data){
+//		var copy = $allPostsTextArea.html();
+//		$allPostsTextArea.html('<p>' + copy + data.msg + "</p>");
+//		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
+//		//.css('scrollTop', $allPostsTextArea.css('scrollHeight'));
+//
+//	});
+//
+//	$clearAllPosts.click(function(e){
+//		$allPostsTextArea.text('');
+//	});
+//
+//	$sendBlastButton.click(function(e){
+//
+//		var blast = $blastField.val();
+//		if(blast.length){
+//			socket.emit("blast", {msg:blast},
+//				function(data){
+//					$blastField.val('');
+//				});
+//		}
+//
+//
+//	});
+//
+//	$blastField.keydown(function (e){
+//	    if(e.keyCode == 13){
+//	        $sendBlastButton.trigger('click');//lazy, but works
+//	    }
+//	})
+//
+//});
+
+var piecePos = [['WR1', 'WN1', 'WB1', 'WK1', 'WQ1', 'WB2', 'WN2', 'WR2'], //1
+    ['WP1', 'WP2', 'WP3', 'WP4', 'WP5', 'WP6', 'WP7', 'WP8'], //2
+    [    0,     0,     0,     0,     0,     0,     0,     0], //3
+    [    0,     0,     0,     0,     0,     0,     0,     0], //4
+    [    0,     0,     0,     0,     0,     0,     0,     0], //5
+    [    0,     0,     0,     0,     0,     0,     0,     0], //6
+    ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
+    ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
+// a      b      c      d      e      f      g      h
 var previousMoves = [];
 
 function allowDrop(ev) {
@@ -24,6 +73,9 @@ function drop(ev) {
         newPosition = [];
     var data = ev.dataTransfer.getData("text/html");
     oldPosition = findPosition(data);
+    console.log(data);
+    console.log(oldPosition);
+    console.log(ev.target.id);
     ev.target.appendChild(document.getElementById(data));
     piecePos[oldPosition[1]][oldPosition[0]] = 0;
     newPosition = findArrayCoords(ev.target.id);
