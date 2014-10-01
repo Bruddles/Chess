@@ -13,6 +13,9 @@ var device  = require('express-device');
 
 var runningPortNumber = process.env.PORT;
 
+var previousMoves = {
+    newMoves: []
+};
 
 app.configure(function(){
 	// I need to access everything in '/public' directly
@@ -51,8 +54,10 @@ io.sockets.on('connection', function (socket) {
 		fn();//call the client back to clear out the field
 	});
 
-    socket.on('move', function(){
-
+    socket.on('newPreviousMoves', function(data){
+        previousMoves.newMoves = data.newMoves;
+        console.log(data);
+        io.sockets.emit('sendMoveData', data);
     });
 
 });

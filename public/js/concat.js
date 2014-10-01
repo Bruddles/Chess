@@ -73,9 +73,9 @@ function drop(ev) {
         newPosition = [];
     var data = ev.dataTransfer.getData("text/html");
     oldPosition = findPosition(data);
-    console.log(data);
-    console.log(oldPosition);
-    console.log(ev.target.id);
+//    console.log(data);
+//    console.log(oldPosition);
+//    console.log(ev.target.id);
     ev.target.appendChild(document.getElementById(data));
     piecePos[oldPosition[1]][oldPosition[0]] = 0;
     newPosition = findArrayCoords(ev.target.id);
@@ -198,27 +198,10 @@ function transform(position, moveTransforms) {
     return possibleMoves;
 }
 
-function WebSocketTest() {
-    if ("WebSocket" in window) {
-        alert("WebSocket is supported by your Browser!");
-        // Let us open a web socket
-        var ws = new WebSocket("ws://localhost:9998/echo");
-        ws.onopen = function () {
-            // Web Socket is connected, send data using send()
-            ws.send("Message to send");
-            alert("Message is sent...");
-        };
-        ws.onmessage = function (evt) {
-            var received_msg = evt.data;
-            alert("Message is received...");
-        };
-        ws.onclose = function () {
-            // websocket is closed.
-            alert("Connection is closed...");
-        };
-    }
-    else {
-        // The browser doesn't support WebSocket
-        alert("WebSocket NOT supported by your Browser!");
-    }
+function sendMove(){
+    socket.emit('newPreviousMoves', {newMoves: previousMoves});
 }
+
+socket.on('sendMoveData', function(newPreviousMoves){
+    previousMoves = newPreviousMoves.newMoves;
+});
