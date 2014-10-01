@@ -7,6 +7,7 @@
                 ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
                 ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
                 // a      b      c      d      e      f      g      h
+var previousMoves = [];
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -14,47 +15,35 @@ function allowDrop(ev) {
 
 function drag(ev) {
     ev.dataTransfer.setData("text/html", ev.target.id);
-    //Add highlighting of possible moves
-    console.log(ev);
-    higlightMoves(ev);
+    //higlightMoves(ev);
 }
 
 function drop(ev) {
     ev.preventDefault();
+    var oldPosition = [],
+        newPosition = [];
     var data = ev.dataTransfer.getData("text/html");
+    oldPosition = findPosition(data);
     ev.target.appendChild(document.getElementById(data));
+    piecePos[oldPosition[1]][oldPosition[0]] = 0;
+    newPosition = findArrayCoords(ev.target.id);
+    piecePos[newPosition[1]][newPosition[0]] = data;
+    previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
 }
 
 function higlightMoves(ev) {
-    //find position
-    var position = [];
-    var possibleMoves = [];
-    for (var i = 0; i < piecePos.length; i++) {
-        if (piecePos[i].indexOf(ev.target.id) !== -1) {
-            position.push(piecePos[i].indexOf(ev.target.id));
-            position.push(i);
-        }
-    }
-    console.log(position);
-    console.log(findCoords(position));
+    var position = [],
+        possibleMoves = [];
+    position = findPosition(ev.target.id);
     switch(ev.target.className) {
         case 'pawn':
             break;
         case 'rook':
             break;
         case 'knight':
-            //Find possible moves
-            //l shape, +/-1, +/-3
+            //l shape, +/-1, +/-2
             var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
-            for (var i = 0; i < moveTransforms.length; i++) {
-                var move;
-                move = [position[0] + moveTransforms[i][0], position[1] + moveTransforms[i][1]];
-                if (move[0] >= 0 || move[0] < 8 || move[1] >= 0 || move[1] < 8) {
-                    possibleMoves.push(move);
-                }
-            }
-            //get id of cells
-            //higligh cells
+            possibleMoves = transform(position, moveTransforms);
             break;
         case 'bishop':
             break;
@@ -64,9 +53,19 @@ function higlightMoves(ev) {
             break;
     }
     for (var i = 0; i < possibleMoves.length; i++) {
-        //document.getElementById(findCoords(possibleMoves[i])).style.borderColor = '#66CD00';
         $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
     }
+}
+
+function findPosition(id) {
+    var position = [];
+    for (var i = 0; i < piecePos.length; i++) {
+        if (piecePos[i].indexOf(id) !== -1) {
+            position.push(piecePos[i].indexOf(id));
+            position.push(i);
+        }
+    }
+    return position;
 }
 
 function findCoords(position) {
@@ -98,8 +97,76 @@ function findCoords(position) {
             coords = 'h';
             break;
     }
-
     coords = coords + (position[1] + 1);
-
     return coords;
+}
+
+function findArrayCoords(position) {
+    var coords = [];
+
+    switch (position.toString().substring(0, 1)) {
+        case 'a':
+            coords.push(0);
+            break;
+        case 'b':
+            coords.push(1);
+            break;
+        case 'c':
+            coords.push(2);
+            break;
+        case 'd':
+            coords.push(3);
+            break;
+        case 'e':
+            coords.push(4);
+            break;
+        case 'f':
+            coords.push(5);
+            break;
+        case 'g':
+            coords.push(6);
+            break;
+        case 'h':
+            coords.push(7);
+            break;
+    }
+    coords.push(Number(position.toString().substring(1, 2)) - 1);
+    return coords;
+}
+
+function transform(position, moveTransforms) {
+    var possibleMoves = [];
+    for (var i = 0; i < moveTransforms.length; i++) {
+        var move;
+        move = [position[0] + moveTransforms[i][0], position[1] + moveTransforms[i][1]];
+        if (move[0] >= 0 || move[0] < 8 || move[1] >= 0 || move[1] < 8) {
+            possibleMoves.push(move);
+        }
+    }
+    return possibleMoves;
+}
+
+function WebSocketTest() {
+    if ("WebSocket" in window) {
+        alert("WebSocket is supported by your Browser!");
+        // Let us open a web socket
+        var ws = new WebSocket("ws://localhost:9998/echo");
+        ws.onopen = function () {
+            // Web Socket is connected, send data using send()
+            ws.send("Message to send");
+            alert("Message is sent...");
+        };
+        ws.onmessage = function (evt) {
+            var received_msg = evt.data;
+            alert("Message is received...");
+        };
+        ws.onclose = function () {
+            // websocket is closed.
+            alert("Connection is closed...");
+        };
+    }
+    else {
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+    }
 }
