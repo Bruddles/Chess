@@ -64,7 +64,7 @@ function allowDrop(ev) {
 
 function drag(ev) {
     ev.dataTransfer.setData("text/html", ev.target.id);
-    //higlightMoves(ev);
+    higlightMoves(ev);
 }
 
 function drop(ev) {
@@ -73,14 +73,53 @@ function drop(ev) {
         newPosition = [];
     var data = ev.dataTransfer.getData("text/html");
     oldPosition = findPosition(data);
-//    console.log(data);
-//    console.log(oldPosition);
-//    console.log(ev.target.id);
-    ev.target.appendChild(document.getElementById(data));
-    piecePos[oldPosition[1]][oldPosition[0]] = 0;
     newPosition = findArrayCoords(ev.target.id);
-    piecePos[newPosition[1]][newPosition[0]] = data;
-    previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
+    console.log(data);
+    console.log(oldPosition);
+    //console.log(ev.target.id);
+    console.log(newPosition);
+    console.log(isLegal(ev, data))
+    if (isLegal(ev, data)) {
+        console.log('moving');
+        ev.target.appendChild(document.getElementById(data));
+        //console.log(ev.target.id);
+        piecePos[oldPosition[1]][oldPosition[0]] = 0;
+        piecePos[newPosition[1]][newPosition[0]] = data;
+        previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
+        socket.emit('newPreviousMoves', {
+            newMoves: previousMoves
+        });
+    }
+}
+
+function isLegal(ev, data){
+    var possibleMoves = [];
+    oldPosition = findPosition(data);
+    newPosition = findArrayCoords(ev.target.id);
+    switch(data.substring(1,2)) {
+        case 'P':
+            return true;
+        case 'R':
+            return true;
+        case 'N':
+            //l shape, +/-1, +/-2
+            var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
+            possibleMoves = transform(oldPosition, moveTransforms);
+            for (var i = 0; i < possibleMoves.length; i++) {
+                if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
+                    return true;
+                }
+            }
+            break;
+        case 'B':
+            return true;
+        case 'Q':
+            return true;
+        case 'K':
+            return true;
+    }
+    return false;
+
 }
 
 function higlightMoves(ev) {
@@ -104,6 +143,7 @@ function higlightMoves(ev) {
         case 'king':
             break;
     }
+    console.log('high' + possibleMoves);
     for (var i = 0; i < possibleMoves.length; i++) {
         $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
     }
@@ -191,17 +231,43 @@ function transform(position, moveTransforms) {
     for (var i = 0; i < moveTransforms.length; i++) {
         var move;
         move = [position[0] + moveTransforms[i][0], position[1] + moveTransforms[i][1]];
-        if (move[0] >= 0 || move[0] < 8 || move[1] >= 0 || move[1] < 8) {
+        if ((move[0] >= 0 && move[0] < 8) && (move[1] >= 0 && move[1] < 8)) {
             possibleMoves.push(move);
         }
     }
     return possibleMoves;
 }
 
-function sendMove(){
-    socket.emit('newPreviousMoves', {newMoves: previousMoves});
+function updateBoard() {
+    for (var i = 0; i < previousMoves.length; i++) {
+        //previousMoves[i][0] //piece id
+        //previousMoves[i][1] //initial cell
+        //previousMoves[i][2] //final cell
+        var position = findPosition(previousMoves[i][0]),
+            newPosition = findArrayCoords(previousMoves[i][2]);
+        if (position === newPosition){
+            continue;
+        }
+        else {
+            $('#' + previousMoves[i][0]).appendTo('#' + previousMoves[i][2]);
+            piecePos[position[1]][position[0]] = 0;
+            piecePos[newPosition[1]][newPosition[0]] = previousMoves[i][0];
+        }
+    }
 }
+
+function lockColour() {
+    //pick a colour to play
+    //dont allow repicking
+}
+
+socket.on('connect', function () {
+   socket.emit('joinGame', {
+       gameName: 'test'
+   })
+});
 
 socket.on('sendMoveData', function(newPreviousMoves){
     previousMoves = newPreviousMoves.newMoves;
+    updateBoard();
 });
