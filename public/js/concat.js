@@ -47,16 +47,19 @@ var app = app || {};
 //
 //});
 
-var piecePos = [['WR1', 'WN1', 'WB1', 'WK1', 'WQ1', 'WB2', 'WN2', 'WR2'], //1
-    ['WP1', 'WP2', 'WP3', 'WP4', 'WP5', 'WP6', 'WP7', 'WP8'], //2
-    [    0,     0,     0,     0,     0,     0,     0,     0], //3
-    [    0,     0,     0,     0,     0,     0,     0,     0], //4
-    [    0,     0,     0,     0,     0,     0,     0,     0], //5
-    [    0,     0,     0,     0,     0,     0,     0,     0], //6
-    ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
-    ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
-// a      b      c      d      e      f      g      h
-var previousMoves = [];
+var previousMoves = [],
+    colouredCells = [],
+    piecePos =
+        [['WR1', 'WN1', 'WB1', 'WK1', 'WQ1', 'WB2', 'WN2', 'WR2'], //1
+        ['WP1', 'WP2', 'WP3', 'WP4', 'WP5', 'WP6', 'WP7', 'WP8'], //2
+        [    0,     0,     0,     0,     0,     0,     0,     0], //3
+        [    0,     0,     0,     0,     0,     0,     0,     0], //4
+        [    0,     0,     0,     0,     0,     0,     0,     0], //5
+        [    0,     0,     0,     0,     0,     0,     0,     0], //6
+        ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
+        ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
+        // a      b      c      d      e      f      g      h
+
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -64,7 +67,7 @@ function allowDrop(ev) {
 
 function drag(ev) {
     ev.dataTransfer.setData("text/html", ev.target.id);
-    higlightMoves(ev);
+    colouredCells = higlightMoves(ev);
 }
 
 function drop(ev) {
@@ -90,6 +93,10 @@ function drop(ev) {
             newMoves: previousMoves
         });
     }
+    console.log('coloured: ' + colouredCells);
+    for (var i = 0; i < colouredCells.length; i++) {
+        $('#' + findCoords(colouredCells[i])).css("background-color","white");
+    }
 }
 
 function isLegal(ev, data){
@@ -103,111 +110,191 @@ function isLegal(ev, data){
                 moveTransforms.push([0, 2]);
             }
             else {
+                var piecePreviouslyMoved = [];
                 for (var i = 0; i < previousMoves.length; i++) {
-                    if (previousMoves[i][0].indexOf(data) != -1) {
-                        moveTransforms.push([0, 2]);
+                    piecePreviouslyMoved.push(previousMoves[i][0]);
+                }
+                if (piecePreviouslyMoved.indexOf(data) === -1 ) { // if any in previous moves equals data, do not push
+                    if (data.substring(0,1) == 'B') {
+                        moveTransforms.push([0, -2]);
+                    } else {
+                        moveTransforms.push([0, +2]);
                     }
                 }
             }
             if (data.substring(0,1) == 'B') {
                 moveTransforms.push([0,-1]);
-                if(piecePos[oldPosition[0] + 1][oldPosition[1] + 1] != 0){
-                    moveTransforms.push([1,1]);
-                }
-                if(piecePos[oldPosition[0] - 1][oldPosition[1] + 1] != 0){
-                    moveTransforms.push([1,-1]);
-                }
+                //if diagonally forward places occupied by other colour
+                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1].substring(0, 1) === 'W'){
+                //    //add diagonal move
+                //    moveTransforms.push([1, -1]);
+                //}
+                //if (piecePos[oldPosition[0]-1][oldPosition[1]-1].substring(0, 1) === 'W'){
+                //    //add diagonal move
+                //    moveTransforms.push([-1, -1]);
+                //}
             } else {
                 moveTransforms.push([0,+1]);
-//                if(piecePos[oldPosition[0] + 1][oldPosition[1] - 1] != 0){
-//                    moveTransforms.push([1,1]);
-//                }
-//                if(piecePos[oldPosition[0] - 1][oldPosition[1] - 1] != 0){
-//                    moveTransforms.push([1,-1]);
-//                }
+                //if diagonally forward places occupied by other colour
+                //if (piecePos[oldPosition[0]+1][oldPosition[1]+1] !== 0 ) {
+                //    if (piecePos[oldPosition[0] + 1][oldPosition[1] + 1].substring(0, 1) === 'B') {
+                //        //add diagonal move
+                //        moveTransforms.push([1, 1]);
+                //    }
+                //    if (piecePos[oldPosition[0] - 1][oldPosition[1] + 1].substring(0, 1) === 'B') {
+                //        //add diagonal move
+                //        moveTransforms.push([-1, 1]);
+                //    }
+                //}
             }
-
             possibleMoves = transform(oldPosition, moveTransforms);
-
-            for (var i = 0; i < possibleMoves.length; i++) {
-                if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
-                    return true;
-                }
-            }
             break;
         case 'R':
-            return true;
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([0,i]);
+                moveTransforms.push([0,-i]);
+            }
+            possibleMoves = transform(oldPosition, moveTransforms);
+            break;
         case 'N':
             //l shape, +/-1, +/-2
             var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
             possibleMoves = transform(oldPosition, moveTransforms);
-            for (var i = 0; i < possibleMoves.length; i++) {
-                if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
-                    return true;
-                }
-            }
             break;
         case 'B':
-            return true;
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([i,i]);
+                moveTransforms.push([i,-i]);
+                moveTransforms.push([-i,i]);
+                moveTransforms.push([-i,-i]);
+            }
+            possibleMoves = transform(oldPosition, moveTransforms);
+            break;
         case 'Q':
-            return true;
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([i,i]);
+                moveTransforms.push([i,-i]);
+                moveTransforms.push([-i,i]);
+                moveTransforms.push([-i,-i]);
+                moveTransforms.push([0,i]);
+                moveTransforms.push([0,-i]);
+                moveTransforms.push([i,0]);
+                moveTransforms.push([-i,0]);
+            }
+            possibleMoves = transform(oldPosition, moveTransforms);
+            break;
         case 'K':
+            var moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
+            possibleMoves = transform(oldPosition, moveTransforms);
+            break;
+    }
+    for (var i = 0; i < possibleMoves.length; i++) {
+        if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
             return true;
+        }
     }
     return false;
-
 }
 
 function higlightMoves(ev) {
     var position = [],
         possibleMoves = [];
-    position = findPosition(ev.target.id);
+    data = ev.target.id;
+    position = findPosition(data);
     switch(ev.target.className) {
         case 'pawn':
             var moveTransforms = [];
-            for (var i = 0; i < previousMoves.length; i++) {
-                if (previousMoves[i][0].indexOf(data) != -1) {
-                    moveTransforms.push([0, 2]);
+            if (previousMoves.length == 0){
+                moveTransforms.push([0, 2]);
+            }
+            else {
+                var piecePreviouslyMoved = [];
+                for (var i = 0; i < previousMoves.length; i++) {
+                    piecePreviouslyMoved.push(previousMoves[i][0]);
+                }
+                if (piecePreviouslyMoved.indexOf(data) === -1 ) { // if any in previous moves equals data, do not push
+                    if (data.substring(0,1) == 'B') {
+                        moveTransforms.push([0, -2]);
+                    } else {
+                        moveTransforms.push([0, +2]);
+                    }
                 }
             }
             if (data.substring(0,1) == 'B') {
-                moveTransforms.push([0,1]);
-                if(piecePos[position[0] + 1][position[1] + 1] != 0){
-                    moveTransforms.push([1,1]);
-                }
-                if(piecePos[position[0] - 1][position[1] + 1] != 0){
-                    moveTransforms.push([-1,1]);
-                }
-            } else {
                 moveTransforms.push([0,-1]);
-                if(piecePos[position[0] + 1][position[1] - 1] != 0){
-                    moveTransforms.push([1,-1]);
-                }
-                if(piecePos[position[0] - 1][position[1] - 1] != 0){
-                    moveTransforms.push([-1,-1]);
-                }
+                //if diagonally forward places occupied by other colour
+                //if (piecePos[position[0]+1][position[1]-1].substring(0, 1) === 'W'){
+                //    //add diagonal move
+                //    moveTransforms.push([1, -1]);
+                //}
+                //if (piecePos[position[0]-1][position[1]-1].substring(0, 1) === 'W'){
+                //    //add diagonal move
+                //    moveTransforms.push([-1, -1]);
+                //}
+            } else {
+                moveTransforms.push([0,+1]);
+                //if diagonally forward places occupied by other colour
+                //if (piecePos[position[0]+1][position[1]+1].substring(0, 1) === 'B'){
+                //    //add diagonal move
+                //    moveTransforms.push([1, 1]);
+                //}
+                //if (piecePos[position[0]-1][position[1]+1].substring(0, 1) === 'B'){
+                //    //add diagonal move
+                //    moveTransforms.push([-1, 1]);
+                //}
             }
             possibleMoves = transform(position, moveTransforms);
-
             break;
         case 'rook':
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([0,i]);
+                moveTransforms.push([0,-i]);
+            }
+            possibleMoves = transform(position, moveTransforms);
             break;
         case 'knight':
-            //l shape, +/-1, +/-2
             var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
             possibleMoves = transform(position, moveTransforms);
             break;
         case 'bishop':
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([i,i]);
+                moveTransforms.push([i,-i]);
+                moveTransforms.push([-i,i]);
+                moveTransforms.push([-i,-i]);
+            }
+            possibleMoves = transform(position, moveTransforms);
             break;
         case 'queen':
+            var moveTransforms = [];
+            for (var i = 0; i < 8; i++) {
+                moveTransforms.push([i,i]);
+                moveTransforms.push([i,-i]);
+                moveTransforms.push([-i,i]);
+                moveTransforms.push([-i,-i]);
+                moveTransforms.push([0,i]);
+                moveTransforms.push([0,-i]);
+                moveTransforms.push([i,0]);
+                moveTransforms.push([-i,0]);
+            }
+            possibleMoves = transform(position, moveTransforms);
             break;
         case 'king':
+            var moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
+            possibleMoves = transform(position, moveTransforms);
             break;
     }
     console.log('high' + possibleMoves);
     for (var i = 0; i < possibleMoves.length; i++) {
         $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
     }
+
+    return possibleMoves;
 }
 
 function findPosition(id) {
