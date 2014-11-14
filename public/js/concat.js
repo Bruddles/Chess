@@ -98,7 +98,43 @@ function isLegal(ev, data){
     newPosition = findArrayCoords(ev.target.id);
     switch(data.substring(1,2)) {
         case 'P':
-            return true;
+            var moveTransforms = [];
+            if (previousMoves.length == 0){
+                moveTransforms.push([0, 2]);
+            }
+            else {
+                for (var i = 0; i < previousMoves.length; i++) {
+                    if (previousMoves[i][0].indexOf(data) != -1) {
+                        moveTransforms.push([0, 2]);
+                    }
+                }
+            }
+            if (data.substring(0,1) == 'B') {
+                moveTransforms.push([0,-1]);
+                if(piecePos[oldPosition[0] + 1][oldPosition[1] + 1] != 0){
+                    moveTransforms.push([1,1]);
+                }
+                if(piecePos[oldPosition[0] - 1][oldPosition[1] + 1] != 0){
+                    moveTransforms.push([1,-1]);
+                }
+            } else {
+                moveTransforms.push([0,+1]);
+//                if(piecePos[oldPosition[0] + 1][oldPosition[1] - 1] != 0){
+//                    moveTransforms.push([1,1]);
+//                }
+//                if(piecePos[oldPosition[0] - 1][oldPosition[1] - 1] != 0){
+//                    moveTransforms.push([1,-1]);
+//                }
+            }
+
+            possibleMoves = transform(oldPosition, moveTransforms);
+
+            for (var i = 0; i < possibleMoves.length; i++) {
+                if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
+                    return true;
+                }
+            }
+            break;
         case 'R':
             return true;
         case 'N':
@@ -128,6 +164,31 @@ function higlightMoves(ev) {
     position = findPosition(ev.target.id);
     switch(ev.target.className) {
         case 'pawn':
+            var moveTransforms = [];
+            for (var i = 0; i < previousMoves.length; i++) {
+                if (previousMoves[i][0].indexOf(data) != -1) {
+                    moveTransforms.push([0, 2]);
+                }
+            }
+            if (data.substring(0,1) == 'B') {
+                moveTransforms.push([0,1]);
+                if(piecePos[position[0] + 1][position[1] + 1] != 0){
+                    moveTransforms.push([1,1]);
+                }
+                if(piecePos[position[0] - 1][position[1] + 1] != 0){
+                    moveTransforms.push([-1,1]);
+                }
+            } else {
+                moveTransforms.push([0,-1]);
+                if(piecePos[position[0] + 1][position[1] - 1] != 0){
+                    moveTransforms.push([1,-1]);
+                }
+                if(piecePos[position[0] - 1][position[1] - 1] != 0){
+                    moveTransforms.push([-1,-1]);
+                }
+            }
+            possibleMoves = transform(position, moveTransforms);
+
             break;
         case 'rook':
             break;

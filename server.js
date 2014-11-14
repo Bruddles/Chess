@@ -17,6 +17,8 @@ var previousMoves = {
     newMoves: []
 };
 
+var gamesList = [];
+
 app.configure(function(){
 	// I need to access everything in '/public' directly
 	app.use(express.static(__dirname + '/public'));
@@ -54,6 +56,12 @@ io.sockets.on('connection', function (socket) {
 		fn();//call the client back to clear out the field
 	});
 
+    socket.on('joinGame', function(data){
+        if (gamesList.indexOf(data.gameName) == -1) {
+            gamesList.push(data.gameName);
+        }
+    });
+
     socket.on('newPreviousMoves', function(data){
         previousMoves.newMoves = data.newMoves;
         console.log(data);
@@ -61,7 +69,6 @@ io.sockets.on('connection', function (socket) {
     });
 
 });
-
 
 server.listen(runningPortNumber);
 
