@@ -63,105 +63,6 @@ function drop(ev) {
     }
 }
 
-function isLegal_old(ev, data){
-    var moveTransforms = [],
-        possibleMoves = [];
-    oldPosition = findPosition(data);
-    newPosition = findArrayCoords(ev.target.id);
-    switch(data.substring(1,2)) {
-        case 'P':
-            if (previousMoves.length == 0){
-                moveTransforms.push([0, 2]);
-            }
-            else {
-                var piecePreviouslyMoved = [];
-                for (var i = 0; i < previousMoves.length; i++) {
-                    piecePreviouslyMoved.push(previousMoves[i][0]);
-                }
-                if (piecePreviouslyMoved.indexOf(data) === -1 ) { // if any in previous moves equals data, do not push
-                    if (data.substring(0,1) == 'B') {
-                        moveTransforms.push([0, -2]);
-                    } else {
-                        moveTransforms.push([0, +2]);
-                    }
-                }
-            }
-            if (data.substring(0,1) == 'B') {
-                moveTransforms.push([0,-1]);
-                //if diagonally forward places occupied by other colour
-                //console.log('black:' + piecePos[oldPosition[0]+1][oldPosition[1]-1]);
-                //console.log('black:' + piecePos[oldPosition[0]-1][oldPosition[1]-1]);
-                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1] !== 0) {
-                //    if (piecePos[oldPosition[0] + 1][oldPosition[1] - 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([1, -1]);
-                //    }
-                //    if (piecePos[oldPosition[0] - 1][oldPosition[1] - 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([-1, -1]);
-                //    }
-                //}
-            } else {
-                moveTransforms.push([0,+1]);
-
-                //console.log('white:' + piecePos[oldPosition[0]+1][oldPosition[1]+1]);
-                //console.log('white:' + piecePos[oldPosition[0]-1][oldPosition[1]+1]);
-                //if diagonally forward places occupied by other colour
-                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1] !== 0) {
-                //    if (piecePos[oldPosition[0] + 1][oldPosition[1] + 1].substring(0, 1) === 'B') {
-                //        //add diagonal move
-                //        moveTransforms.push([1, 1]);
-                //    }
-                //    if (piecePos[oldPosition[0] - 1][oldPosition[1] + 1].substring(0, 1) === 'B') {
-                //        //add diagonal move
-                //        moveTransforms.push([-1, 1]);
-                //    }
-                //}
-            }
-            break;
-        case 'R':
-            for (var i = 0; i < 8; i++) {
-                moveTransforms.push([0,i]);
-                moveTransforms.push([0,-i]);
-            }
-            break;
-        case 'N':
-            //l shape, +/-1, +/-2
-            moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
-            break;
-        case 'B':
-            for (var i = 0; i < 8; i++) {
-                moveTransforms.push([i,i]);
-                moveTransforms.push([i,-i]);
-                moveTransforms.push([-i,i]);
-                moveTransforms.push([-i,-i]);
-            }
-            break;
-        case 'Q':
-            for (var i = 0; i < 8; i++) {
-                moveTransforms.push([i,i]);
-                moveTransforms.push([i,-i]);
-                moveTransforms.push([-i,i]);
-                moveTransforms.push([-i,-i]);
-                moveTransforms.push([0,i]);
-                moveTransforms.push([0,-i]);
-                moveTransforms.push([i,0]);
-                moveTransforms.push([-i,0]);
-            }
-            break;
-        case 'K':
-            moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
-            break;
-    }
-    possibleMoves = transform(oldPosition, moveTransforms);
-    for (var i = 0; i < possibleMoves.length; i++) {
-        if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
-            return true;
-        }
-    }
-    return false;
-}
-
 function isLegal(ev){
     possibleMoves = currentMove.possibleMoves;
     newPosition = findArrayCoords(ev.target.id);
@@ -202,40 +103,43 @@ function higlightMoves(ev) {
             if (data.substring(0,1) == 'B') {
                 moveTransforms.push([0,-1]);
                 //if diagonally forward places occupied by other colour
-                //console.log('black: ' + piecePos[position[0]+1][position[1]-1]);
-                //console.log('black: ' + piecePos[position[0]-1][position[1]-1]);
-                //if (piecePos[position[0]+1][position[1]-1] !== 0) {
-                //    if (piecePos[position[0] + 1][position[1] - 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([1, -1]);
-                //    }
-                //}
-                //
-                //if (piecePos[position[0] - 1][position[1] - 1] !== 0) {
-                //    if (piecePos[position[0] - 1][position[1] - 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([-1, -1]);
-                //    }
-                //}
+                if ((position[0]+1 <= 7)  && (position[1]-1 >= 0)) { //only og in if +1+1 is on the board
+                    console.log(position);
+                    console.log(piecePos[position[0] + 1][position[1] + 1]);
+                    if (piecePos[position[0] + 1][position[1] - 1] && piecePos[position[0] + 1][position[1] - 1] !== 0) {
+                        if (piecePos[position[0] + 1][position[1] - 1].substring(0, 1) === 'W') {
+                            //add diagonal move
+                            moveTransforms.push([1, -1]);
+                        }
+                    }
+                }
+                if ((position[0]-1 >= 0) && (position[1]-1 >= 0)) {//only og in if -1+1 is on the board
+                    if (piecePos[position[0] - 1][position[1] - 1] && piecePos[position[0] - 1][position[1] - 1] !== 0) {
+                        if (piecePos[position[0] - 1][position[1] - 1].substring(0, 1) === 'W') {
+                            //add diagonal move
+                            moveTransforms.push([-1, -1]);
+                        }
+                    }
+                }
             } else {
                 moveTransforms.push([0,+1]);
-
-                //console.log('white: ' + piecePos[position[0]+1][position[1]+1]);
-                //console.log('white: ' + piecePos[position[0]-1][position[1]+1]);
                 //if diagonally forward places occupied by other colour
-                //if (piecePos[position[0]+1][position[1]-1] !== 0) {
-                //    if (piecePos[position[0] + 1][position[1] + 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([1, -1]);
-                //    }
-                //}
-                //
-                //if (piecePos[position[0] - 1][position[1] - 1] !== 0) {
-                //    if (piecePos[position[0] - 1][position[1] + 1].substring(0, 1) === 'W') {
-                //        //add diagonal move
-                //        moveTransforms.push([-1, -1]);
-                //    }
-                //}
+                if ((position[0]+1 <= 7)  && (position[1]+1 <= 7)) { //only og in if +1+1 is on the board
+                    if (piecePos[position[0] + 1][position[1] + 1] && piecePos[position[0] + 1][position[1] + 1] !== 0) {
+                        if (piecePos[position[0] + 1][position[1] + 1].substring(0, 1) === 'B') {
+                            //add diagonal move
+                            moveTransforms.push([1, 1]);
+                        }
+                    }
+                }
+                if ((position[0]-1 >= 0) && (position[1]+1 <= 7)) {//only og in if -1+1 is on the board
+                    if (piecePos[position[0] - 1][position[1] + 1] && piecePos[position[0] - 1][position[1] + 1] !== 0) {
+                        if (piecePos[position[0] - 1][position[1] + 1].substring(0, 1) === 'B') {
+                            //add diagonal move
+                            moveTransforms.push([-1, 1]);
+                        }
+                    }
+                }
             }
             break;
         case 'rook':
@@ -245,7 +149,7 @@ function higlightMoves(ev) {
             }
             break;
         case 'knight':
-            moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
+            moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2], [2, 1], [-2, 1], [2, -1], [-2, -1]];
             break;
         case 'bishop':
             for (var i = 0; i < 8; i++) {
