@@ -9,62 +9,23 @@ var socket = io.connect('http://127.0.0.1:1337/');
 
 var app = app || {};
 
-
-// shortcut for document.ready
-//$(function(){
-//	//setup some common vars
-//	var $blastField = $('#blast'),
-//		$allPostsTextArea = $('#allPosts'),
-//		$clearAllPosts = $('#clearAllPosts'),
-//		$sendBlastButton = $('#send');
-//
-//
-//	//SOCKET STUFF
-//	socket.on("blast", function(data){
-//		var copy = $allPostsTextArea.html();
-//		$allPostsTextArea.html('<p>' + copy + data.msg + "</p>");
-//		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
-//		//.css('scrollTop', $allPostsTextArea.css('scrollHeight'));
-//
-//	});
-//
-//	$clearAllPosts.click(function(e){
-//		$allPostsTextArea.text('');
-//	});
-//
-//	$sendBlastButton.click(function(e){
-//
-//		var blast = $blastField.val();
-//		if(blast.length){
-//			socket.emit("blast", {msg:blast},
-//				function(data){
-//					$blastField.val('');
-//				});
-//		}
-//
-//
-//	});
-//
-//	$blastField.keydown(function (e){
-//	    if(e.keyCode == 13){
-//	        $sendBlastButton.trigger('click');//lazy, but works
-//	    }
-//	})
-//
-//});
-
-var previousMoves = [],
+var currentMove = {
+        data: null,
+        position: null,
+        possibleMoves: null
+    },
+    previousMoves = [],
     colouredCells = [],
-    piecePos =
-        [['WR1', 'WN1', 'WB1', 'WK1', 'WQ1', 'WB2', 'WN2', 'WR2'], //1
-        ['WP1', 'WP2', 'WP3', 'WP4', 'WP5', 'WP6', 'WP7', 'WP8'], //2
-        [    0,     0,     0,     0,     0,     0,     0,     0], //3
-        [    0,     0,     0,     0,     0,     0,     0,     0], //4
-        [    0,     0,     0,     0,     0,     0,     0,     0], //5
-        [    0,     0,     0,     0,     0,     0,     0,     0], //6
-        ['BP1', 'BP2', 'BP3', 'BP4', 'BP5', 'BP6', 'BP7', 'BP8'], //7
-        ['BR1', 'BN1', 'BB1', 'BK1', 'BQ1', 'BB2', 'BN2', 'BR2']];//8
-        // a      b      c      d      e      f      g      h
+    piecePos = [['WR1', 'WP1', 0, 0, 0, 0, 'BP1', 'BR1'],  //0
+        ['WN1', 'WP2', 0, 0, 0, 0, 'BP2', 'BN1'],   //1
+        ['WB1', 'WP3', 0, 0, 0, 0, 'BP3', 'BB1'],   //2
+        ['WK1', 'WP4', 0, 0, 0, 0, 'BP4', 'BK1'],   //3
+        ['WQ1', 'WP5', 0, 0, 0, 0, 'BP5', 'BQ1'],   //4
+        ['WB2', 'WP6', 0, 0, 0, 0, 'BP6', 'BB2'],   //5
+        ['WN2', 'WP7', 0, 0, 0, 0, 'BP7', 'BN2'],   //6
+        ['WR2', 'WP8', 0, 0, 0, 0, 'BP8', 'BR2']];  //7
+    // y  0      1     2  3  4  5   6      7
+
 
 
 function allowDrop(ev) {
@@ -83,35 +44,32 @@ function drop(ev) {
     var data = ev.dataTransfer.getData("text/html");
     oldPosition = findPosition(data);
     newPosition = findArrayCoords(ev.target.id);
-    console.log(data);
     console.log(oldPosition);
-    //console.log(ev.target.id);
     console.log(newPosition);
-    console.log(isLegal(ev, data))
-    if (isLegal(ev, data)) {
+    console.log(isLegal(ev))
+    if (isLegal(ev)) {
         console.log('moving');
         ev.target.appendChild(document.getElementById(data));
         //console.log(ev.target.id);
-        piecePos[oldPosition[1]][oldPosition[0]] = 0;
-        piecePos[newPosition[1]][newPosition[0]] = data;
+        piecePos[oldPosition[0]][oldPosition[1]] = 0;
+        piecePos[newPosition[0]][newPosition[1]] = data;
         previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
         socket.emit('newPreviousMoves', {
             newMoves: previousMoves
         });
     }
-    console.log('coloured: ' + colouredCells);
     for (var i = 0; i < colouredCells.length; i++) {
         $('#' + findCoords(colouredCells[i])).css("background-color","white");
     }
 }
 
-function isLegal(ev, data){
-    var possibleMoves = [];
+function isLegal_old(ev, data){
+    var moveTransforms = [],
+        possibleMoves = [];
     oldPosition = findPosition(data);
     newPosition = findArrayCoords(ev.target.id);
     switch(data.substring(1,2)) {
         case 'P':
-            var moveTransforms = [];
             if (previousMoves.length == 0){
                 moveTransforms.push([0, 2]);
             }
@@ -131,18 +89,25 @@ function isLegal(ev, data){
             if (data.substring(0,1) == 'B') {
                 moveTransforms.push([0,-1]);
                 //if diagonally forward places occupied by other colour
-                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1].substring(0, 1) === 'W'){
-                //    //add diagonal move
-                //    moveTransforms.push([1, -1]);
-                //}
-                //if (piecePos[oldPosition[0]-1][oldPosition[1]-1].substring(0, 1) === 'W'){
-                //    //add diagonal move
-                //    moveTransforms.push([-1, -1]);
+                //console.log('black:' + piecePos[oldPosition[0]+1][oldPosition[1]-1]);
+                //console.log('black:' + piecePos[oldPosition[0]-1][oldPosition[1]-1]);
+                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1] !== 0) {
+                //    if (piecePos[oldPosition[0] + 1][oldPosition[1] - 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([1, -1]);
+                //    }
+                //    if (piecePos[oldPosition[0] - 1][oldPosition[1] - 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([-1, -1]);
+                //    }
                 //}
             } else {
                 moveTransforms.push([0,+1]);
+
+                //console.log('white:' + piecePos[oldPosition[0]+1][oldPosition[1]+1]);
+                //console.log('white:' + piecePos[oldPosition[0]-1][oldPosition[1]+1]);
                 //if diagonally forward places occupied by other colour
-                //if (piecePos[oldPosition[0]+1][oldPosition[1]+1] !== 0 ) {
+                //if (piecePos[oldPosition[0]+1][oldPosition[1]-1] !== 0) {
                 //    if (piecePos[oldPosition[0] + 1][oldPosition[1] + 1].substring(0, 1) === 'B') {
                 //        //add diagonal move
                 //        moveTransforms.push([1, 1]);
@@ -153,33 +118,26 @@ function isLegal(ev, data){
                 //    }
                 //}
             }
-            possibleMoves = transform(oldPosition, moveTransforms);
             break;
         case 'R':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([0,i]);
                 moveTransforms.push([0,-i]);
             }
-            possibleMoves = transform(oldPosition, moveTransforms);
             break;
         case 'N':
             //l shape, +/-1, +/-2
-            var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
-            possibleMoves = transform(oldPosition, moveTransforms);
+            moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
             break;
         case 'B':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([i,i]);
                 moveTransforms.push([i,-i]);
                 moveTransforms.push([-i,i]);
                 moveTransforms.push([-i,-i]);
             }
-            possibleMoves = transform(oldPosition, moveTransforms);
             break;
         case 'Q':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([i,i]);
                 moveTransforms.push([i,-i]);
@@ -190,13 +148,23 @@ function isLegal(ev, data){
                 moveTransforms.push([i,0]);
                 moveTransforms.push([-i,0]);
             }
-            possibleMoves = transform(oldPosition, moveTransforms);
             break;
         case 'K':
-            var moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
-            possibleMoves = transform(oldPosition, moveTransforms);
+            moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
             break;
     }
+    possibleMoves = transform(oldPosition, moveTransforms);
+    for (var i = 0; i < possibleMoves.length; i++) {
+        if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isLegal(ev){
+    possibleMoves = currentMove.possibleMoves;
+    newPosition = findArrayCoords(ev.target.id);
     for (var i = 0; i < possibleMoves.length; i++) {
         if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
             return true;
@@ -207,12 +175,14 @@ function isLegal(ev, data){
 
 function higlightMoves(ev) {
     var position = [],
+        moveTransforms = [],
         possibleMoves = [];
     data = ev.target.id;
+    currentMove.data = data;
     position = findPosition(data);
+    currentMove.position = position;
     switch(ev.target.className) {
         case 'pawn':
-            var moveTransforms = [];
             if (previousMoves.length == 0){
                 moveTransforms.push([0, 2]);
             }
@@ -232,52 +202,60 @@ function higlightMoves(ev) {
             if (data.substring(0,1) == 'B') {
                 moveTransforms.push([0,-1]);
                 //if diagonally forward places occupied by other colour
-                //if (piecePos[position[0]+1][position[1]-1].substring(0, 1) === 'W'){
-                //    //add diagonal move
-                //    moveTransforms.push([1, -1]);
+                //console.log('black: ' + piecePos[position[0]+1][position[1]-1]);
+                //console.log('black: ' + piecePos[position[0]-1][position[1]-1]);
+                //if (piecePos[position[0]+1][position[1]-1] !== 0) {
+                //    if (piecePos[position[0] + 1][position[1] - 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([1, -1]);
+                //    }
                 //}
-                //if (piecePos[position[0]-1][position[1]-1].substring(0, 1) === 'W'){
-                //    //add diagonal move
-                //    moveTransforms.push([-1, -1]);
+                //
+                //if (piecePos[position[0] - 1][position[1] - 1] !== 0) {
+                //    if (piecePos[position[0] - 1][position[1] - 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([-1, -1]);
+                //    }
                 //}
             } else {
                 moveTransforms.push([0,+1]);
+
+                //console.log('white: ' + piecePos[position[0]+1][position[1]+1]);
+                //console.log('white: ' + piecePos[position[0]-1][position[1]+1]);
                 //if diagonally forward places occupied by other colour
-                //if (piecePos[position[0]+1][position[1]+1].substring(0, 1) === 'B'){
-                //    //add diagonal move
-                //    moveTransforms.push([1, 1]);
+                //if (piecePos[position[0]+1][position[1]-1] !== 0) {
+                //    if (piecePos[position[0] + 1][position[1] + 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([1, -1]);
+                //    }
                 //}
-                //if (piecePos[position[0]-1][position[1]+1].substring(0, 1) === 'B'){
-                //    //add diagonal move
-                //    moveTransforms.push([-1, 1]);
+                //
+                //if (piecePos[position[0] - 1][position[1] - 1] !== 0) {
+                //    if (piecePos[position[0] - 1][position[1] + 1].substring(0, 1) === 'W') {
+                //        //add diagonal move
+                //        moveTransforms.push([-1, -1]);
+                //    }
                 //}
             }
-            possibleMoves = transform(position, moveTransforms);
             break;
         case 'rook':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([0,i]);
                 moveTransforms.push([0,-i]);
             }
-            possibleMoves = transform(position, moveTransforms);
             break;
         case 'knight':
-            var moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
-            possibleMoves = transform(position, moveTransforms);
+            moveTransforms = [[1, 2], [-1, 2], [1, -2], [-1, -2]];
             break;
         case 'bishop':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([i,i]);
                 moveTransforms.push([i,-i]);
                 moveTransforms.push([-i,i]);
                 moveTransforms.push([-i,-i]);
             }
-            possibleMoves = transform(position, moveTransforms);
             break;
         case 'queen':
-            var moveTransforms = [];
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([i,i]);
                 moveTransforms.push([i,-i]);
@@ -288,14 +266,14 @@ function higlightMoves(ev) {
                 moveTransforms.push([i,0]);
                 moveTransforms.push([-i,0]);
             }
-            possibleMoves = transform(position, moveTransforms);
             break;
         case 'king':
-            var moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
-            possibleMoves = transform(position, moveTransforms);
+            moveTransforms = [[1, 0], [1, 1], [0, 1], [1, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1]];
+
             break;
     }
-    console.log('high' + possibleMoves);
+    possibleMoves = transform(position, moveTransforms);
+    currentMove.possibleMoves = possibleMoves;
     for (var i = 0; i < possibleMoves.length; i++) {
         $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
     }
@@ -307,8 +285,8 @@ function findPosition(id) {
     var position = [];
     for (var i = 0; i < piecePos.length; i++) {
         if (piecePos[i].indexOf(id) !== -1) {
-            position.push(piecePos[i].indexOf(id));
             position.push(i);
+            position.push(piecePos[i].indexOf(id));
         }
     }
     return position;
@@ -404,8 +382,8 @@ function updateBoard() {
         }
         else {
             $('#' + previousMoves[i][0]).appendTo('#' + previousMoves[i][2]);
-            piecePos[position[1]][position[0]] = 0;
-            piecePos[newPosition[1]][newPosition[0]] = previousMoves[i][0];
+            piecePos[position[0]][position[1]] = 0;
+            piecePos[newPosition[0]][newPosition[1]] = previousMoves[i][0];
         }
     }
 }
