@@ -51,10 +51,10 @@
       <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/index.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state vertical-scroll-proportion="-10.0" vertical-offset="2528" max-vertical-offset="3111">
+              <caret line="164" column="64" selection-start-line="164" selection-start-column="64" selection-end-line="164" selection-end-column="64" />
               <folding>
-                <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+                <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -63,35 +63,26 @@
       <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="884">
+            <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
               <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1329" max-vertical-offset="5712">
-              <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
+            <state vertical-scroll-proportion="1.9239864" vertical-offset="0" max-vertical-offset="2244">
+              <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
               <folding>
+                <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+                <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
                 <element signature="n#!!block;n#findPosition#0" expanded="false" />
-                <element signature="n#!!block;n#findCoords#0" expanded="false" />
+                <element signature="e#7451#7967#0" expanded="false" />
                 <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-                <element signature="n#!!block;n#transform#0" expanded="false" />
                 <element signature="n#!!block;n#updateBoard#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.86948854" vertical-offset="0" max-vertical-offset="629">
-              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -99,9 +90,11 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1360">
-              <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1360">
+              <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+              <folding>
+                <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -116,8 +109,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/public/js/app.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/views/index.ejs" />
+        <option value="$PROJECT_DIR$/public/js/app.js" />
       </list>
     </option>
   </component>
@@ -254,7 +248,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -273,8 +266,41 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Chess" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Chess" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -320,6 +346,11 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
       <method />
     </configuration>
     <list size="0" />
@@ -380,16 +411,190 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="11" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/views/index.ejs">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3264">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
+            <element signature="n#!!block;n#findPosition#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
+            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
+            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1360">
+          <caret line="72" column="33" selection-start-line="72" selection-start-column="33" selection-end-line="72" selection-end-column="33" />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1105">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
+            <element signature="n#!!block;n#findPosition#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
+            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
+            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="768" max-vertical-offset="1360">
+          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1105">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
+            <element signature="n#!!block;n#findPosition#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
+            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
+            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="768" max-vertical-offset="1360">
+          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1105">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
+            <element signature="n#!!block;n#findPosition#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
+            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
+            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="768" max-vertical-offset="1360">
+          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="3247">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -407,10 +612,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3621">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
             <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
             <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
             <element signature="n#!!block;n#updateBoard#0" expanded="false" />
           </folding>
         </state>
@@ -420,7 +626,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1241">
           <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -429,7 +637,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="3094">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -447,10 +655,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4658">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
             <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
             <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
             <element signature="n#!!block;n#updateBoard#0" expanded="false" />
           </folding>
         </state>
@@ -460,7 +669,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1360">
           <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
-          <folding />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -469,7 +680,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3094">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -487,10 +698,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1668" max-vertical-offset="4658">
           <caret line="121" column="19" selection-start-line="121" selection-start-column="19" selection-end-line="121" selection-end-column="19" />
           <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
             <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
             <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
             <element signature="n#!!block;n#updateBoard#0" expanded="false" />
           </folding>
         </state>
@@ -500,7 +712,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1360">
           <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
-          <folding />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -509,7 +723,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3094">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -527,10 +741,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2702" max-vertical-offset="3621">
           <caret line="269" column="0" selection-start-line="269" selection-start-column="0" selection-end-line="273" selection-end-column="3" />
           <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
             <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
             <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
             <element signature="n#!!block;n#updateBoard#0" expanded="false" />
           </folding>
         </state>
@@ -540,7 +755,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1360">
           <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
-          <folding />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -549,7 +766,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3094">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -567,10 +784,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2995" max-vertical-offset="3621">
           <caret line="269" column="0" selection-start-line="269" selection-start-column="0" selection-end-line="273" selection-end-column="3" />
           <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
             <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
             <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
             <element signature="n#!!block;n#updateBoard#0" expanded="false" />
           </folding>
         </state>
@@ -580,7 +798,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1360">
           <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
-          <folding />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -598,43 +818,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="3094">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <marker date="1412237192593" expanded="true" signature="11734:11942" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1360">
-          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/style.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="884">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="884">
           <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1329" max-vertical-offset="5712">
-          <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
-          <folding>
-            <element signature="n#!!block;n#findPosition#0" expanded="false" />
-            <element signature="n#!!block;n#findCoords#0" expanded="false" />
-            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
-            <element signature="n#!!block;n#transform#0" expanded="false" />
-            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -642,7 +830,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.86948854" vertical-offset="0" max-vertical-offset="612">
           <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.0" vertical-offset="2528" max-vertical-offset="3111">
+          <caret line="164" column="64" selection-start-line="164" selection-start-column="64" selection-end-line="164" selection-end-column="64" />
+          <folding>
+            <marker date="1417791120853" expanded="true" signature="11743:11951" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1360">
+          <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+          <folding>
+            <marker date="1412239541249" expanded="true" signature="1051:1071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.9239864" vertical-offset="0" max-vertical-offset="2244">
+          <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
+          <folding>
+            <element signature="n#!!block;n#highlightMoves#0" expanded="false" />
+            <element signature="n#!!block;n#pawnMoveTransforms#0" expanded="false" />
+            <element signature="n#!!block;n#findPosition#0" expanded="false" />
+            <element signature="e#7451#7967#0" expanded="false" />
+            <element signature="n#!!block;n#findArrayCoords#0" expanded="false" />
+            <element signature="n#!!block;n#updateBoard#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
