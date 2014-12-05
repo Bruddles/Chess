@@ -10,7 +10,6 @@ var game = {
         possibleMoves: []
     },
     previousMoves: [],
-    colouredCells: [],
     piecePos: [['WR1', 'WP1', 0, 0, 0, 0, 'BP1', 'BR1'],  //0
         ['WN1', 'WP2', 0, 0, 0, 0, 'BP2', 'BN1'],   //1
         ['WB1', 'WP3', 0, 0, 0, 0, 'BP3', 'BB1'],   //2
@@ -22,27 +21,26 @@ var game = {
     // y  0      1     2  3  4  5   6      7
 };
 
-
-
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
 function drag(ev) {
     ev.dataTransfer.setData("text/html", ev.target.id);
-    game.colouredCells = highlightMoves(ev);
+    game.currentMove.possibleMoves = calcPossibleMoves(ev);
+    highlightMoves(game.currentMove.possibleMoves);
 }
 
 function drop(ev) {
-    ev.preventDefault();
+    ev.preventDefault(); //original
     var oldPosition = [],
         newPosition = [],
-        data = ev.dataTransfer.getData("text/html");
+        data = ev.dataTransfer.getData("text/html"); //original
     oldPosition = findPosition(data);
     newPosition = findArrayCoords(ev.target.id);
     if (isLegal(newPosition)) {
         //isCapture(newPosition);
-        ev.target.appendChild(document.getElementById(data));
+        ev.target.appendChild(document.getElementById(data)); //original
         game.piecePos[oldPosition[0]][oldPosition[1]] = 0;
         game.piecePos[newPosition[0]][newPosition[1]] = data;
         game.previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
@@ -50,9 +48,7 @@ function drop(ev) {
             newMoves: game.previousMoves
         });
     }
-    for (var i = 0; i < game.colouredCells.length; i++) {
-        $('#' + findCoords(game.colouredCells[i])).css("background-color","white");
-    }
+    unHighlightMoves(game.currentMove.possibleMoves);
 }
 
 //function isCapture(ev) {
@@ -61,6 +57,18 @@ function drop(ev) {
 //
 //    }
 //}
+
+function highlightMoves(possibleMoves) {
+    for (var i = 0; i < possibleMoves.length; i++) {
+        $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
+    }
+}
+
+function unHighlightMoves(possibleMoves) {
+    for (var i = 0; i < possibleMoves.length; i++) {
+        $('#' + findCoords(possibleMoves[i])).css("background-color","white");
+    }
+}
 
 function isLegal(newPosition){
     var possibleMoves = game.currentMove.possibleMoves;
@@ -73,7 +81,7 @@ function isLegal(newPosition){
     return false;
 }
 
-function highlightMoves(ev) {
+function calcPossibleMoves(ev) {
     var position = [],
         moveTransforms = [],
         possibleMoves = [];
@@ -89,6 +97,8 @@ function highlightMoves(ev) {
             for (var i = 0; i < 8; i++) {
                 moveTransforms.push([0,i]);
                 moveTransforms.push([0,-i]);
+                moveTransforms.push([i,0]);
+                moveTransforms.push([-i,0]);
             }
             break;
         case 'knight':
@@ -119,11 +129,6 @@ function highlightMoves(ev) {
             break;
     }
     possibleMoves = transform(position, moveTransforms);
-    game.currentMove.possibleMoves = possibleMoves;
-    for (var i = 0; i < possibleMoves.length; i++) {
-        $('#' + findCoords(possibleMoves[i])).css("background-color","yellow");
-    }
-
     return possibleMoves;
 }
 
