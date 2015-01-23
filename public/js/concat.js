@@ -35,15 +35,28 @@ function drop(ev) {
     ev.preventDefault(); //original
     var oldPosition = [],
         newPosition = [],
-        data = ev.dataTransfer.getData("text/html"); //original
+        data = ev.dataTransfer.getData("text/html"),
+        isCaptureMove = isCapture(ev); //original
     oldPosition = findPosition(data);
-    newPosition = findArrayCoords(ev.target.id);
-    if (isLegal(newPosition)) {
-        //isCapture(newPosition);
-        ev.target.appendChild(document.getElementById(data)); //original
-        game.piecePos[oldPosition[0]][oldPosition[1]] = 0;
-        game.piecePos[newPosition[0]][newPosition[1]] = data;
-        game.previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
+    if (isCaptureMove) {
+        newPosition = findPosition(ev.target.id);
+    } else {
+        newPosition = findArrayCoords(ev.target.id);
+    }
+    if (isLegal(newPosition, game.currentMove.possibleMoves)) {
+        if (isCaptureMove){
+            document.getElementById('captured-pieces').appendChild(document.getElementById(findCoords(newPosition)).children[0]);
+            document.getElementById(findCoords(newPosition)).appendChild(document.getElementById(data));
+            game.piecePos[oldPosition[0]][oldPosition[1]] = 0; // on capture it overwrites the old pieces position
+            game.piecePos[newPosition[0]][newPosition[1]] = data;
+            game.previousMoves.push([data, findCoords(oldPosition), findCoords(newPosition)]);
+        } else {
+            ev.target.appendChild(document.getElementById(data)); //original
+            game.piecePos[oldPosition[0]][oldPosition[1]] = 0; // on capture it overwrites the old pieces position
+            game.piecePos[newPosition[0]][newPosition[1]] = data;
+            game.previousMoves.push([data, findCoords(oldPosition), ev.target.id]);
+        }
+
         socket.emit('newPreviousMoves', {
             newMoves: game.previousMoves
         });
@@ -51,12 +64,14 @@ function drop(ev) {
     unHighlightMoves(game.currentMove.possibleMoves);
 }
 
-//function isCapture(ev) {
-//    var regex = new RegExp("/^[A-Z]{2}\d{1}/");
-//    if (regex.test(ev.target.id)) {
-//
-//    }
-//}
+function isCapture(ev) {
+    var regex = /^[BbWw][PpRrNnBbKkQq]\d{1}$/;
+    console.log(regex.test(ev.target.id));
+    if (regex.test(ev.target.id)) {
+        console.log('capture!!!!!!!!!!!!!!');
+        return true;
+    }
+}
 
 function highlightMoves(possibleMoves) {
     for (var i = 0; i < possibleMoves.length; i++) {
@@ -70,9 +85,7 @@ function unHighlightMoves(possibleMoves) {
     }
 }
 
-function isLegal(newPosition){
-    var possibleMoves = game.currentMove.possibleMoves;
-    if (newPosition)
+function isLegal(newPosition, possibleMoves){
     for (var i = 0; i < possibleMoves.length; i++) {
         if (possibleMoves[i][0] == newPosition[0] && possibleMoves[i][1] == newPosition[1] ) {
             return true;
@@ -284,20 +297,29 @@ function transform(position, moveTransforms) {
 }
 
 function updateBoard() {
-    for (var i = 0; i < game.previousMoves.length; i++) {
-        //previousMoves[i][0] //piece id
-        //previousMoves[i][1] //initial cell
-        //previousMoves[i][2] //final cell
-        var position = findPosition(game.previousMoves[i][0]),
-            newPosition = findArrayCoords(game.previousMoves[i][2]);
-        if (position === newPosition){
-            continue;
-        }
-        else {
-            $('#' + game.previousMoves[i][0]).appendTo('#' + game.previousMoves[i][2]);
-            game.piecePos[position[0]][position[1]] = 0;
-            game.piecePos[newPosition[0]][newPosition[1]] = game.previousMoves[i][0];
-        }
+    //for (var i = 0; i < game.previousMoves.length; i++) {
+    //    //previousMoves[i][0] //piece id
+    //    //previousMoves[i][1] //initial cell
+    //    //previousMoves[i][2] //final cell
+    //    var position = findPosition(game.previousMoves[i][0]),
+    //        newPosition = findArrayCoords(game.previousMoves[i][2]);
+    //    if (position === newPosition){
+    //        continue;
+    //    }
+    //    else {
+    //        $('#' + game.previousMoves[i][0]).appendTo('#' + game.previousMoves[i][2]);
+    //        game.piecePos[position[0]][position[1]] = 0;
+    //        game.piecePos[newPosition[0]][newPosition[1]] = game.previousMoves[i][0];
+    //    }
+    //}
+
+    var i = game.previousMoves.length - 1;
+    var position = findPosition(game.previousMoves[i][0]),
+        newPosition = findArrayCoords(game.previousMoves[i][2]);
+    if (position !== newPosition){
+        $('#' + game.previousMoves[i][0]).appendTo('#' + game.previousMoves[i][2]);
+        game.piecePos[position[0]][position[1]] = 0;
+        game.piecePos[newPosition[0]][newPosition[1]] = game.previousMoves[i][0];
     }
 }
 
